@@ -13,7 +13,7 @@
 <script>
 $(function() {
   var faye = new Faye.Client('http://localhost:9292/faye');
-  var subscription = faye.subscribe("1", function(data) {
+  var subscription = faye.subscribe("/messages/1", function(data) {
     alert(data);
   });
 });

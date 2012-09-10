@@ -4,8 +4,12 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     puts "email user: #{@user.email}"
     # send email in background
-    Resque.enqueue(Emailer, @user.id)
-    render json: {status: "ok", channel: "#{@user.id}"}
+    
+    channel = "#{@user.id}"
+    Resque.enqueue(Emailer, {user_id: @user.id, channel: channel})
+    respond_to do |format|
+      format.html { render action: "show" }
+     end
   end
 
   # GET /users
