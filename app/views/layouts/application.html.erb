@@ -3,12 +3,21 @@
 <head>
   <title>Background</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
+  <%= javascript_include_tag "application", "http://localhost:9292/faye.js" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
 <%= yield %>
 
+<script>
+$(function() {
+  var faye = new Faye.Client('http://localhost:9292/faye');
+  var subscription = faye.subscribe("1", function(data) {
+    alert(data);
+  });
+});
+
+</script>
 </body>
 </html>
