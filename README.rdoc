@@ -30,18 +30,23 @@ rails s
   http://localhost:3000/resque/queues
 
 
-7. To submit an email job
+7. Create a new user by going to http://localhost:3000/users and clicking on New User link. To submit an email job for the user with user id 1
 
-Go to http://localhost:3000/users/1/ and click on the Email link
+  Go to http://localhost:3000/users/1/ and click on the Email link
 
-You should get an alert from the server side in a few seconds.
+  You should get an alert from the server side in a few seconds. That is it - you have
+  exercised the power of faye and redis to submit a job and get a message back
+  from the server to the client asynchronously`.
 
 When you click on the email link, following events happen:
 
 . In the email action of users controller, we submit a job to Emailer worker
-. The worker (app/workers/emailer.rb) picks the job sleeps for a few seconds and
-  then sends the "email sent" message to the faye server on the channel "/messages/1".
-. On the client, we are already listening on this channel and get the message and give an alert - following is the logic in layout/application.html.erb that does this
+. The worker (app/workers/emailer.rb) picks the job in which it sleeps for a 
+  few seconds and then sends the "email sent" message to the faye server on 
+  the channel "/messages/1". In this example, the channel id is simply the user id
+  but in real application, it would also have a random guid component so that
+  we do not confuse between different messages and all.
+. On the client, we are already listening on this channel - so we  get the message and give an alert - following is the logic in layout/application.html.erb that does this
 
 <script>
   $(function() {
@@ -52,5 +57,4 @@ When you click on the email link, following events happen:
   });
 </script>
 
-
-8. In real application, you would create a separate channel (includes a random guid) for each job - so the clients do not interfere with each other.
+8. As mentioned, in real application, you would create a separate channel (includes a random guid) for each job - so the clients do not interfere with each other. You would also make the worker more light weight by not loading the entire rails environment for each worker task.
