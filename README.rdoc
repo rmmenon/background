@@ -53,9 +53,4 @@ When you click on the email link, following events happen:
 </script>
 
 
-
-
-
-   
-
-
+8. In real application, you would create a separate channel (includes a random guid) for each job - so the clients do not interfere with each other.
