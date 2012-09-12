@@ -15,7 +15,7 @@ Uses resque, redis, faye to accomplish this.
 
 3. Run the rake job to start listening to workers (resque side) - these workers listen to requests coming from the rails web app via user browser requests.
 
-  rake resque:work QUEUE='*'
+  RAILS_ENV=development rake resque:work QUEUE='*'
 
 4. Start the faye server 
 
